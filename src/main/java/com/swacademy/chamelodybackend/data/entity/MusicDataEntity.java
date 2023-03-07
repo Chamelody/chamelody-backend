@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter @Setter
 public class MusicDataEntity {
     @Id
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "id", nullable = false)
     private String id;
 
     @Column(name = "name", nullable = false)

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter @Setter
 public class MusicEmotionDataEntity {
     @Id
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "id", nullable = false)
     private String id;
 
     @Column(name = "happy", nullable = false)

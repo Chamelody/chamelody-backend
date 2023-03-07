@@ -66,12 +66,12 @@ public class MusicService {
         return musicRepository.selectAllMusic(true);
     }
 
-    public Optional<Music> getMusicById(String musicId) {
+    public Music getMusicById(String musicId) {
         return musicRepository.selectMusicById(musicId, true);
     }
 
-    public Optional<MusicEmotion> getMusicEmotionById(String musicEmotionId) {
-        return musicEmotionRepository.selectMusicEmotionById(musicEmotionId);
+    public MusicEmotion getMusicEmotionById(String musicEmotionId) {
+        return musicRepository.selectMusicEmotionByMusicId(musicEmotionId);
     }
 
     public Predicate<Music> convertPredicateDoubleToMusic(Emotion targetEmotion, Predicate<Double> condition) {
