@@ -74,8 +74,8 @@ public class MusicService {
         return musicEmotionRepository.selectMusicEmotionById(musicEmotionId);
     }
 
-    public List<Music> getMusicListFromFeatureRange(Emotion targetEmotion, Predicate<Double> condition) {
-        Predicate<Music> musicEntityCondition = switch (targetEmotion) {
+    public Predicate<Music> convertPredicateDoubleToMusic(Emotion targetEmotion, Predicate<Double> condition) {
+        return switch (targetEmotion) {
             case HAPPY -> music -> condition.test(music.getMusicEmotion().getHappy());
             case SAD -> music -> condition.test(music.getMusicEmotion().getSad());
             case FEAR -> music -> condition.test(music.getMusicEmotion().getFear());
@@ -93,7 +93,10 @@ public class MusicService {
             case VITALITY -> music -> condition.test(music.getMusicEmotion().getVitality());
             case PRIDE -> music -> condition.test(music.getMusicEmotion().getPride());
         };
+    }
 
+    public List<Music> getMusicListFromFeatureRange(Emotion targetEmotion, Predicate<Double> condition) {
+        Predicate<Music> musicEntityCondition = this.convertPredicateDoubleToMusic(targetEmotion, condition);
         return this.getAllMusicList().stream().filter(musicEntityCondition).toList();
     }
 
@@ -102,28 +105,43 @@ public class MusicService {
         return this.getAllMusicList().stream().filter(condition).collect(Collectors.toList());
     }
 
+    @SuppressWarnings("unchecked")
     public List<Music> getMusicListFromFeatureRange(Object...targetEmotionAndCondition) {
-        return null;
-    }
-
-    public List<Music> getMusicListFromGaussianFeatureRange(Emotion targetEmotion, double centerValue, int sampleCount) {
-        return null;
-    }
-
-    public List<Music> getMusicListFromGaussianFeatureRange(Object...targetEmotionAndCenterValue) {
-        return null;
+        // arguments validation
+        if (targetEmotionAndCondition.length % 2 != 0)
+            throw new IllegalArgumentException("Arguments counts must be even.");
+        for (int i = 0; i < targetEmotionAndCondition.length; i += 2) {
+            if (!(targetEmotionAndCondition[i] instanceof Emotion))
+                throw new IllegalArgumentException("Odd arguments should be instance of Emotion.");
+            if (!(targetEmotionAndCondition[i + 1] instanceof Predicate))
+                throw new IllegalArgumentException("Even arguments should be instance of Predicate<Double>");
+        }
+        // filtering
+        List<Music> musicList = this.getAllMusicList();
+        Emotion targetEmotion;
+        Predicate<Double> condition;
+        for (int i = 0; i < targetEmotionAndCondition.length; i += 2) {
+            targetEmotion = (Emotion) targetEmotionAndCondition[i];
+            condition = (Predicate<Double>) targetEmotionAndCondition[i + 1];
+            Predicate<Music> musicEntityCondition = this.convertPredicateDoubleToMusic(targetEmotion, condition);
+            musicList = musicList.stream().filter(musicEntityCondition).toList();
+        }
+        return musicList;
     }
 
     public List<Music> getMusicListByMainEmotion(Emotion targetEmotion) {
+        // @TODO Implement this method.
         return null;
     }
 
     public List<Music> getMusicListFromReleaseDateRange(Predicate<LocalDate> condition) {
-        return null;
+        Predicate<Music> musicEntityCondition = music -> condition.test(music.getReleaseDate());
+        return this.getAllMusicList().stream().filter(musicEntityCondition).toList();
     }
 
     public List<Music> getMusicListFromCachedDateRange(Predicate<LocalDate> condition) {
-        return null;
+        Predicate<Music> musicEntityCondition = music -> condition.test(music.getCachedDate());
+        return this.getAllMusicList().stream().filter(musicEntityCondition).toList();
     }
 
     public MusicListBuilder getMusicListBuilder(List<Music> musicList) {
@@ -131,47 +149,73 @@ public class MusicService {
     }
 
     public MusicListBuilder getMusicListBuilder() {
-        return new MusicListBuilder(this.getAllMusicList());
+        return new MusicListBuilder();
     }
 
-    static class MusicListBuilder {
+    class MusicListBuilder {
 
-        private final List<Music> musicList;
+        private List<Music> musicList;
+
+        public MusicListBuilder() {
+            this.musicList = MusicService.this.getAllMusicList();
+        }
 
         public MusicListBuilder(List<Music> musicList) {
             this.musicList = musicList;
         }
 
-        MusicListBuilder setFeatureRange(String targetEmotion, Predicate<Integer> condition) {
-            return null;
+        MusicListBuilder setFeatureRange(Emotion targetEmotion, Predicate<Double> condition) {
+            Predicate<Music> musicEntityCondition =
+                    MusicService.this.convertPredicateDoubleToMusic(targetEmotion, condition);
+            this.musicList = this.musicList.stream().filter(musicEntityCondition).toList();
+            return this;
         }
 
+        @Deprecated
         MusicListBuilder setFeatureRange(Predicate<Music> condition) {
-            return null;
+            this.musicList = this.musicList.stream().filter(condition).toList();
+            return this;
         }
 
+        @SuppressWarnings("unchecked")
         MusicListBuilder setFeatureRange(Object...targetEmotionAndCondition) {
-            return null;
-        }
-
-        MusicListBuilder setGaussianFeatureRangeFilter(String targetEmotion, double centerValue) {
-            return null;
-        }
-
-        MusicListBuilder setGaussianFeatureRangeFilter(Object...targetEmotionAndCenterValue) {
-            return null;
+            // arguments validation
+            if (targetEmotionAndCondition.length % 2 != 0)
+                throw new IllegalArgumentException("Arguments counts must be even.");
+            for (int i = 0; i < targetEmotionAndCondition.length; i += 2) {
+                if (!(targetEmotionAndCondition[i] instanceof Emotion))
+                    throw new IllegalArgumentException("Odd arguments should be instance of Emotion.");
+                if (!(targetEmotionAndCondition[i + 1] instanceof Predicate))
+                    throw new IllegalArgumentException("Even arguments should be instance of Predicate<Double>");
+            }
+            // filtering
+            Emotion targetEmotion;
+            Predicate<Double> condition;
+            for (int i = 0; i < targetEmotionAndCondition.length; i += 2) {
+                targetEmotion = (Emotion) targetEmotionAndCondition[i];
+                condition = (Predicate<Double>) targetEmotionAndCondition[i + 1];
+                Predicate<Music> musicEntityCondition =
+                        MusicService.this.convertPredicateDoubleToMusic(targetEmotion, condition);
+                this.musicList = this.musicList.stream().filter(musicEntityCondition).toList();
+            }
+            return this;
         }
 
         MusicListBuilder setMainEmotionFilter(Emotion targetEmotion) {
-            return null;
+            // @TODO Implement this method.
+            return this;
         }
 
         MusicListBuilder setReleaseDateRangeFilter(Predicate<LocalDate> condition) {
-            return null;
+            Predicate<Music> musicEntityCondition = music -> condition.test(music.getReleaseDate());
+            this.musicList = this.musicList.stream().filter(musicEntityCondition).toList();
+            return this;
         }
 
         MusicListBuilder setCachedDateRangeFilter(Predicate<LocalDate> condition) {
-            return null;
+            Predicate<Music> musicEntityCondition = music -> condition.test(music.getCachedDate());
+            this.musicList = this.musicList.stream().filter(musicEntityCondition).toList();
+            return this;
         }
 
         List<Music> build() {

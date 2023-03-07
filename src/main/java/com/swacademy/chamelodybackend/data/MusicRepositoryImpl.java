@@ -28,6 +28,11 @@ public class MusicRepositoryImpl implements MusicRepository {
     }
 
     @Override
+    public List<Music> selectAllMusic(boolean getMusicEmotion) {
+        return null;
+    }
+
+    @Override
     public Optional<Music> selectMusicById(String musicId) {
         return Optional.empty();
     }
