@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter @Setter
 public class MusicEmotionDataEntity {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, insertable = false, updatable = false)
     private String id;
 
     @Column(name = "happy", nullable = false)
@@ -44,6 +44,20 @@ public class MusicEmotionDataEntity {
     private Double vitality;
     @Column(name = "pride", nullable = false)
     private Double pride;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private MusicDataEntity music;
+
+    public void setMusic(MusicDataEntity music) {
+        this.music = music;
+        music.setMusicEmotion(this, true);
+    }
+
+    public void setMusic(MusicDataEntity music, boolean isSetSelf) {
+        if (isSetSelf) this.music = music;
+        else this.setMusic(music);
+    }
 
     @PrePersist
     private void prePersist() {

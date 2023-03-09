@@ -18,7 +18,8 @@ public class MusicDataEntity {
     private String name;
     @Column(name = "artists", nullable = false)
     private String artists;
-
+    @Column(name = "popularity", nullable = false)
+    private Integer popularity;
     @Column(name = "danceability", nullable = false, updatable = false)
     private Double danceability;
     @Column(name = "energy", nullable = false, updatable = false)
@@ -53,7 +54,16 @@ public class MusicDataEntity {
     @Column(name = "cached_date", columnDefinition = "DATE")
     private LocalDate cachedDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "music", fetch = FetchType.LAZY)
     private MusicEmotionDataEntity musicEmotion;
+
+    public void setMusicEmotion(MusicEmotionDataEntity musicEmotion) {
+        this.musicEmotion = musicEmotion;
+        musicEmotion.setMusic(this, true);
+    }
+
+    public void setMusicEmotion(MusicEmotionDataEntity musicEmotion, boolean isSetSelf) {
+        if (isSetSelf) this.musicEmotion = musicEmotion;
+        else this.setMusicEmotion(musicEmotion);
+    }
 }

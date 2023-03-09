@@ -8,8 +8,8 @@ import com.swacademy.chamelodybackend.domain.repository.MusicRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -25,51 +25,133 @@ public class MusicService {
     }
 
 
+    /**
+     * Add music.
+     * @param music music entity that has music emotion entity.
+     * @return saved music id
+     */
     public String addMusic(Music music) {
+        this.addMusicEmotion(music.getMusicEmotion());
         return musicRepository.insertMusic(music);
     }
 
-    public List<Music> addMusicList(List<Music> musicList) {
-        for (Music music: musicList) musicRepository.insertMusic(music);
-        return musicList;
+    /**
+     * Add music.
+     * @param music music entity
+     * @param musicEmotion music emotion entity
+     * @return saved music id
+     */
+    public String addMusic(Music music, MusicEmotion musicEmotion) {
+        this.addMusicEmotion(musicEmotion);
+        music.setMusicEmotion(musicEmotion);
+        return musicRepository.insertMusic(music);
     }
 
-    public String addMusicEmotion(MusicEmotion musicEmotion) {
+    /**
+     * Add music list.
+     * @param musicList music entity list that have music emotion entities.
+     * @return saved music id list
+     */
+    public List<String> addMusicList(List<Music> musicList) {
+        List<String> musicIdList = new ArrayList<>();
+        musicList.forEach(music -> {
+            String savedMusicId = musicRepository.insertMusic(music);
+            musicIdList.add(savedMusicId);
+        });
+        return musicIdList;
+    }
+
+    /**
+     * Add music emotion. It cannot be called outer class to ensure the safe relation of Music-MusicEmotion data.
+     * @param musicEmotion music emotion entity
+     * @return saved music emotion id
+     */
+    private String addMusicEmotion(MusicEmotion musicEmotion) {
         return musicEmotionRepository.insertMusicEmotion(musicEmotion);
     }
 
+    /**
+     * Delete music.
+     * @param music music entity
+     * @return the status of deletion
+     */
     public boolean deleteMusic(Music music) {
+        this.deleteMusicEmotion(music.getMusicEmotion());
         return musicRepository.deleteMusicById(music.getId());
     }
 
+    /**
+     * Delete music by id.
+     * @param musicId music id
+     * @return the status of deletion
+     */
     public boolean deleteMusicById(String musicId) {
+        Music targetMusic = this.getMusicById(musicId);
+        this.deleteMusicEmotion(targetMusic.getMusicEmotion());
         return musicRepository.deleteMusicById(musicId);
     }
 
-    public boolean deleteMusicEmotion(MusicEmotion musicEmotion) {
+    /**
+     * Delete music emotion. It cannot be called outer class to ensure the safe relation of Music-MusicEmotion data.
+     * @param musicEmotion music emotion entity
+     * @return the status of deletion
+     */
+    private boolean deleteMusicEmotion(MusicEmotion musicEmotion) {
         return musicEmotionRepository.deleteMusicEmotionById(musicEmotion.getId());
     }
 
-    public boolean deleteMusicEmotionById(String musicEmotionId) {
+    /**
+     * Delete music emotion by id. It cannot be called outer class
+     * to ensure the safe relation of Music-MusicEmotion data.
+     * @param musicEmotionId music emotion id
+     * @return the status of deletion
+     */
+    private boolean deleteMusicEmotionById(String musicEmotionId) {
         return musicEmotionRepository.deleteMusicEmotionById(musicEmotionId);
     }
 
+    /**
+     * Update music.
+     * @param updatedMusic updated music entity
+     * @return updated music id
+     */
     public String updateMusic(Music updatedMusic) {
         return musicRepository.updateMusic(updatedMusic);
     }
 
+    /**
+     * Update music emotion.
+     * @param updatedMusicEmotion updated music emotion entity
+     * @return updated music emotion id
+     */
     public String updateMusicEmotion(MusicEmotion updatedMusicEmotion) {
         return musicEmotionRepository.updateMusicEmotion(updatedMusicEmotion);
     }
 
+    /**
+     * Get all music list. It uses EAGER loading for music emotion by default,
+     * as it is likely that music emotion data will be frequently accessed.
+     * @return list of all music
+     */
     public List<Music> getAllMusicList() {
         return musicRepository.selectAllMusic(true);
     }
 
+    /**
+     * Get music by id. It uses EAGER loading for music emotion by default,
+     * as it is likely that music emotion data will be frequently accessed.
+     * @param musicId music id
+     * @return music entity
+     */
     public Music getMusicById(String musicId) {
         return musicRepository.selectMusicById(musicId, true);
     }
 
+    /**
+     * Get music emotion.
+     * @param musicEmotionId music emotion id
+     * @return music emotion entity
+     */
     public MusicEmotion getMusicEmotionById(String musicEmotionId) {
         return musicRepository.selectMusicEmotionByMusicId(musicEmotionId);
     }
