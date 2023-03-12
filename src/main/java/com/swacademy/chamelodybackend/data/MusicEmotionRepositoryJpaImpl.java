@@ -1,17 +1,15 @@
 package com.swacademy.chamelodybackend.data;
 
-import com.swacademy.chamelodybackend.data.repository.MusicEmotionJpaRepository;
+import com.swacademy.chamelodybackend.data.jpa.MusicEmotionJpaRepository;
 import com.swacademy.chamelodybackend.domain.entity.MusicEmotion;
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
 import com.swacademy.chamelodybackend.domain.repository.MusicEmotionRepository;
 
-import java.util.Optional;
-
-public class MusicEmotionRepositoryImpl implements MusicEmotionRepository {
+public class MusicEmotionRepositoryJpaImpl implements MusicEmotionRepository {
 
     private final MusicEmotionJpaRepository musicEmotionJpaRepository;
 
-    public MusicEmotionRepositoryImpl(MusicEmotionJpaRepository musicEmotionJpaRepository) {
+    public MusicEmotionRepositoryJpaImpl(MusicEmotionJpaRepository musicEmotionJpaRepository) {
         this.musicEmotionJpaRepository = musicEmotionJpaRepository;
     }
 

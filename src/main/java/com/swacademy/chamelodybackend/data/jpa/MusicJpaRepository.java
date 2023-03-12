@@ -1,4 +1,4 @@
-package com.swacademy.chamelodybackend.data.repository;
+package com.swacademy.chamelodybackend.data.jpa;
 
 import com.swacademy.chamelodybackend.data.entity.MusicDataEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
