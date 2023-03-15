@@ -1,4 +1,4 @@
-package com.swacademy.chamelodybackend.data;
+package com.swacademy.chamelodybackend.data.jpa;
 
 import com.swacademy.chamelodybackend.data.jpa.MusicJpaRepository;
 import com.swacademy.chamelodybackend.domain.entity.Music;

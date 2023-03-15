@@ -1,18 +1,10 @@
-package com.swacademy.chamelodybackend.data;
+package com.swacademy.chamelodybackend.data.csv;
 
-import com.swacademy.chamelodybackend.data.jpa.MusicEmotionJpaRepository;
 import com.swacademy.chamelodybackend.domain.entity.MusicEmotion;
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
 import com.swacademy.chamelodybackend.domain.repository.MusicEmotionRepository;
 
-public class MusicEmotionRepositoryJpaImpl implements MusicEmotionRepository {
-
-    private final MusicEmotionJpaRepository musicEmotionJpaRepository;
-
-    public MusicEmotionRepositoryJpaImpl(MusicEmotionJpaRepository musicEmotionJpaRepository) {
-        this.musicEmotionJpaRepository = musicEmotionJpaRepository;
-    }
-
+public class MusicEmotionCsvRepositoryImpl implements MusicEmotionRepository {
     @Override
     public String insertMusicEmotion(MusicEmotion musicEmotion) throws IllegalArgumentException, InternalPersistenceException {
         return null;
@@ -32,4 +24,5 @@ public class MusicEmotionRepositoryJpaImpl implements MusicEmotionRepository {
     public boolean deleteMusicEmotionById(String musicEmotionId) throws IllegalArgumentException, InternalPersistenceException {
         return false;
     }
+    
 }
