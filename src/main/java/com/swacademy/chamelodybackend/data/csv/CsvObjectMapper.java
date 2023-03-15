@@ -1,6 +1,7 @@
 package com.swacademy.chamelodybackend.data.csv;
 
 import com.swacademy.chamelodybackend.data.entity.MusicDataEntity;
+import com.swacademy.chamelodybackend.data.entity.MusicEmotionDataEntity;
 
 public class CsvObjectMapper {
 
@@ -28,7 +29,7 @@ public class CsvObjectMapper {
         return musicDataEntity;
     }
 
-    public String[] musicDataEntityToLine(MusicDataEntity musicDataEntity) {
+    public String[] musicDataEntityToCsvLine(MusicDataEntity musicDataEntity) {
         String[] line = new String[25];
 
         line[MusicCsvIndex.ARTISTS.index] = musicDataEntity.getArtists();
@@ -52,4 +53,51 @@ public class CsvObjectMapper {
         return line;
     }
 
+    public MusicEmotionDataEntity csvLineToMusicEmotionDataEntity(String[] line) {
+        MusicEmotionDataEntity musicEmotionDataEntity = new MusicEmotionDataEntity();
+
+        musicEmotionDataEntity.setId(line[MusicEmotionCsvIndex.ID.index]);
+        musicEmotionDataEntity.setHappy(Double.parseDouble(line[MusicEmotionCsvIndex.HAPPY.index]));
+        musicEmotionDataEntity.setSad(Double.parseDouble(line[MusicEmotionCsvIndex.SAD.index]));
+        musicEmotionDataEntity.setFear(Double.parseDouble(line[MusicEmotionCsvIndex.FEAR.index]));
+        musicEmotionDataEntity.setAnger(Double.parseDouble(line[MusicEmotionCsvIndex.ANGER.index]));
+        musicEmotionDataEntity.setLove(Double.parseDouble(line[MusicEmotionCsvIndex.LOVE.index]));
+        musicEmotionDataEntity.setDefaultMood(Double.parseDouble(line[MusicEmotionCsvIndex.DEFAULT_MOOD.index]));
+        musicEmotionDataEntity.setRelax(Double.parseDouble(line[MusicEmotionCsvIndex.RELAX.index]));
+        musicEmotionDataEntity.setNervous(Double.parseDouble(line[MusicEmotionCsvIndex.NERVOUS.index]));
+        musicEmotionDataEntity.setSurprise(Double.parseDouble(line[MusicEmotionCsvIndex.SURPRISE.index]));
+        musicEmotionDataEntity.setTouch(Double.parseDouble(line[MusicEmotionCsvIndex.TOUCH.index]));
+        musicEmotionDataEntity.setShame(Double.parseDouble(line[MusicEmotionCsvIndex.SHAME.index]));
+        musicEmotionDataEntity.setLonely(Double.parseDouble(line[MusicEmotionCsvIndex.LONELY.index]));
+        musicEmotionDataEntity.setLonging(Double.parseDouble(line[MusicEmotionCsvIndex.LONGING.index]));
+        musicEmotionDataEntity.setTired(Double.parseDouble(line[MusicEmotionCsvIndex.TIRED.index]));
+        musicEmotionDataEntity.setVitality(Double.parseDouble(line[MusicEmotionCsvIndex.VITALITY.index]));
+        musicEmotionDataEntity.setPride(Double.parseDouble(line[MusicEmotionCsvIndex.PRIDE.index]));
+
+        return musicEmotionDataEntity;
+    }
+
+    public String[] musicEmotionDataEntityToCsvLine(MusicEmotionDataEntity musicEmotionDataEntity) {
+        String[] line = new String[17];
+
+        line[MusicEmotionCsvIndex.ID.index] = musicEmotionDataEntity.getId();
+        line[MusicEmotionCsvIndex.HAPPY.index] = Double.toString(musicEmotionDataEntity.getHappy());
+        line[MusicEmotionCsvIndex.SAD.index] = Double.toString(musicEmotionDataEntity.getSad());
+        line[MusicEmotionCsvIndex.FEAR.index] = Double.toString(musicEmotionDataEntity.getFear());
+        line[MusicEmotionCsvIndex.ANGER.index] = Double.toString(musicEmotionDataEntity.getAnger());
+        line[MusicEmotionCsvIndex.LOVE.index] = Double.toString(musicEmotionDataEntity.getLove());
+        line[MusicEmotionCsvIndex.DEFAULT_MOOD.index] = Double.toString(musicEmotionDataEntity.getDefaultMood());
+        line[MusicEmotionCsvIndex.RELAX.index] = Double.toString(musicEmotionDataEntity.getRelax());
+        line[MusicEmotionCsvIndex.NERVOUS.index] = Double.toString(musicEmotionDataEntity.getNervous());
+        line[MusicEmotionCsvIndex.SURPRISE.index] = Double.toString(musicEmotionDataEntity.getSurprise());
+        line[MusicEmotionCsvIndex.TOUCH.index] = Double.toString(musicEmotionDataEntity.getTouch());
+        line[MusicEmotionCsvIndex.SHAME.index] = Double.toString(musicEmotionDataEntity.getShame());
+        line[MusicEmotionCsvIndex.LONELY.index] = Double.toString(musicEmotionDataEntity.getLonely());
+        line[MusicEmotionCsvIndex.LONGING.index] = Double.toString(musicEmotionDataEntity.getLonging());
+        line[MusicEmotionCsvIndex.TIRED.index] = Double.toString(musicEmotionDataEntity.getTired());
+        line[MusicEmotionCsvIndex.VITALITY.index] = Double.toString(musicEmotionDataEntity.getVitality());
+        line[MusicEmotionCsvIndex.PRIDE.index] = Double.toString(musicEmotionDataEntity.getPride());
+
+        return line;
+    }
 }

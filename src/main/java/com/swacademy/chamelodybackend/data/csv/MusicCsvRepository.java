@@ -19,10 +19,9 @@ import java.util.Optional;
 @Repository
 public class MusicCsvRepository {
 
-    private final static String MUSIC_FILE = "src/main/resources/input.csv";
+    private final static String MUSIC_FILE = "src/main/resources/music.csv";
 
     private final CsvObjectMapper csvObjectMapper;
-
     List<MusicDataEntity> cache = null;
 
     public MusicCsvRepository() throws IOException, CsvException {
@@ -44,7 +43,7 @@ public class MusicCsvRepository {
         if (duplicateCheck) throw new EntityExistsException();
 
         CSVWriter csvAppender = new CSVWriter(new FileWriter(MUSIC_FILE, true));
-        csvAppender.writeNext(this.csvObjectMapper.musicDataEntityToLine(musicDataEntity));
+        csvAppender.writeNext(this.csvObjectMapper.musicDataEntityToCsvLine(musicDataEntity));
         csvAppender.close();
         this.cache.add(musicDataEntity);
         return musicDataEntity;
@@ -58,7 +57,7 @@ public class MusicCsvRepository {
         CSVWriter csvWriter = new CSVWriter(new FileWriter(MUSIC_FILE));
         List<String[]> lines = new ArrayList<>();
         allMusicList.forEach(musicDataEntity ->
-                lines.add(this.csvObjectMapper.musicDataEntityToLine(musicDataEntity)));
+                lines.add(this.csvObjectMapper.musicDataEntityToCsvLine(musicDataEntity)));
         csvWriter.writeAll(lines);
         csvWriter.close();
         this.cache = allMusicList;
@@ -73,11 +72,10 @@ public class MusicCsvRepository {
         return updatedMusic;
     }
 
-    public boolean delete(String musicId) throws IOException, EntityNotFoundException {
+    public void delete(String musicId) throws IOException, EntityNotFoundException {
         List<MusicDataEntity> updateList = this.cache;
         updateList.remove(this.select(musicId));  // It can be done because ArrayList remove method uses 'equals' to compare.
         this.insertAll(updateList);
-        return false;
     }
 
     public MusicDataEntity select(String musicId) throws EntityNotFoundException {
