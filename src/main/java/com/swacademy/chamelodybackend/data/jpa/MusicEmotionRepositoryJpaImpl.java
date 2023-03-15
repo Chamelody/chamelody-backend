@@ -4,7 +4,9 @@ import com.swacademy.chamelodybackend.data.jpa.MusicEmotionJpaRepository;
 import com.swacademy.chamelodybackend.domain.entity.MusicEmotion;
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
 import com.swacademy.chamelodybackend.domain.repository.MusicEmotionRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class MusicEmotionRepositoryJpaImpl implements MusicEmotionRepository {
 
     private final MusicEmotionJpaRepository musicEmotionJpaRepository;

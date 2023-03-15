@@ -5,9 +5,11 @@ import com.swacademy.chamelodybackend.domain.entity.Music;
 import com.swacademy.chamelodybackend.domain.entity.MusicEmotion;
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
 import com.swacademy.chamelodybackend.domain.repository.MusicRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class MusicRepositoryJpaImpl implements MusicRepository {
 
     private final MusicJpaRepository musicJpaRepository;

@@ -66,4 +66,10 @@ public class MusicDataEntity {
         if (isSetSelf) this.musicEmotion = musicEmotion;
         else this.setMusicEmotion(musicEmotion);
     }
+
+    @Override
+    public boolean equals(Object musicDataEntity) {
+        if (!(musicDataEntity instanceof MusicDataEntity entity)) return false;
+        return this.id.equals(entity.getId());
+    }
 }
