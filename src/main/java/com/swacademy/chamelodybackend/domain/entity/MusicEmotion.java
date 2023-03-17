@@ -26,6 +26,8 @@ public class MusicEmotion {
     private Double vitality;
     private Double pride;
 
+    private Music music;
+
     public MusicEmotion() {
         this.happy = this.happy == null ? 0 : this.happy;
         this.sad = this.sad == null ? 0 : this.sad;

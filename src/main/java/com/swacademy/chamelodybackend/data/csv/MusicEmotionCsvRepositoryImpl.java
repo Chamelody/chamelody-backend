@@ -3,7 +3,11 @@ package com.swacademy.chamelodybackend.data.csv;
 import com.swacademy.chamelodybackend.domain.entity.MusicEmotion;
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
 import com.swacademy.chamelodybackend.domain.repository.MusicEmotionRepository;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 
+@Repository
+@Primary
 public class MusicEmotionCsvRepositoryImpl implements MusicEmotionRepository {
     @Override
     public String insertMusicEmotion(MusicEmotion musicEmotion) throws IllegalArgumentException, InternalPersistenceException {

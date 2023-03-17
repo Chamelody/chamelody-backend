@@ -2,6 +2,7 @@ package com.swacademy.chamelodybackend.aop;
 
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -22,7 +23,7 @@ public class ExceptionHandlerAspect {
         } catch (InvalidDataAccessApiUsageException | DataRetrievalFailureException |
                  EntityNotFoundException | DuplicateKeyException illegalArgumentException) {
             throw new IllegalArgumentException(illegalArgumentException.getMessage());
-        } catch (DataAccessException dataAccessException) {
+        } catch (DataAccessException | PersistenceException dataAccessException) {
             throw new InternalPersistenceException(dataAccessException.getMessage());
         }
     }

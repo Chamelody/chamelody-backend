@@ -23,6 +23,7 @@ dependencies {
 //    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.opencsv:opencsv:5.7.1")  // @TODO It must be deleted. It is vulnerable now.
+    implementation("org.modelmapper:modelmapper:3.1.1")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
