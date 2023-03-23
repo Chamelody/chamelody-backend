@@ -3,8 +3,8 @@ package com.swacademy.chamelodybackend.data.csv;
 import com.swacademy.chamelodybackend.aop.PersistenceExceptionHandler;
 import com.swacademy.chamelodybackend.data.entity.MusicDataEntity;
 import com.swacademy.chamelodybackend.data.entity.MusicEmotionDataEntity;
-import com.swacademy.chamelodybackend.data.mapper.MusicEmotionMapper;
-import com.swacademy.chamelodybackend.data.mapper.MusicMapper;
+import com.swacademy.chamelodybackend.data.mapper.DataMusicEmotionMapper;
+import com.swacademy.chamelodybackend.data.mapper.DataMusicMapper;
 import com.swacademy.chamelodybackend.domain.entity.Music;
 import com.swacademy.chamelodybackend.domain.entity.MusicEmotion;
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
@@ -22,14 +22,14 @@ public class MusicCsvRepositoryImpl implements MusicRepository {
 
     private final MusicCsvRepository musicCsvRepository;
     private final MusicEmotionCsvRepository musicEmotionCsvRepository;
-    private final MusicMapper musicMapper;
-    private final MusicEmotionMapper musicEmotionMapper;
+    private final DataMusicMapper musicMapper;
+    private final DataMusicEmotionMapper musicEmotionMapper;
 
     public MusicCsvRepositoryImpl(
             MusicCsvRepository musicCsvRepository,
             MusicEmotionCsvRepository musicEmotionCsvRepository,
-            MusicMapper musicMapper,
-            MusicEmotionMapper musicEmotionMapper
+            DataMusicMapper musicMapper,
+            DataMusicEmotionMapper musicEmotionMapper
     ) {
         this.musicCsvRepository = musicCsvRepository;
         this.musicEmotionCsvRepository = musicEmotionCsvRepository;

@@ -6,11 +6,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MusicMapper {
+public class DataMusicMapper {
 
     private final ModelMapper modelMapper;
 
-    public MusicMapper(ModelMapper modelMapper) {
+    public DataMusicMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
