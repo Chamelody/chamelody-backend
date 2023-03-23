@@ -38,7 +38,7 @@ public class MusicCsvRepositoryImpl implements MusicRepository {
     }
 
     @Override
-//    @PersistenceExceptionHandler
+    @PersistenceExceptionHandler
     public String insertMusic(Music music) throws IllegalArgumentException, InternalPersistenceException {
         MusicDataEntity musicDataEntity = this.musicMapper.toDataEntity(music);
         try {
@@ -93,10 +93,9 @@ public class MusicCsvRepositoryImpl implements MusicRepository {
 
     @Override
     @PersistenceExceptionHandler
-    public boolean deleteMusicById(String musicId) throws IllegalArgumentException, InternalPersistenceException {
+    public void deleteMusicById(String musicId) throws IllegalArgumentException, InternalPersistenceException {
         try {
             this.musicCsvRepository.delete(musicId);
-            return true;
         } catch (IOException ioException) {
             throw new PersistenceException(ioException.getMessage());
         }

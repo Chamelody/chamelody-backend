@@ -70,13 +70,12 @@ public interface MusicRepository {
      * @throws IllegalArgumentException When given id is wrong.
      * @throws InternalPersistenceException When an exception is thrown in the data layer.
      */
-    boolean deleteMusicById(String musicId) throws IllegalArgumentException, InternalPersistenceException;
+    void deleteMusicById(String musicId) throws IllegalArgumentException, InternalPersistenceException;
 
     /**
      * Select music emotion entity by music id. It can be replaced Music.getMusicEmotion method.
      * Data layer exception should be handled and converted Java standard exception
      * and the custom exception that defined in the domain layer.
-     * @param musicId music id
      * @return Return music emotion entity. Not null.
      * @throws IllegalArgumentException When given id is wrong.
      * Include {@link org.springframework.dao.DataRetrievalFailureException DataRetrievalFailureException}.

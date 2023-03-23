@@ -41,9 +41,8 @@ public interface MusicEmotionRepository {
      * Delete music emotion by id. Data layer exception should be handled
      * and converted Java standard exception and the custom exception that defined in the domain layer.
      * @param musicEmotionId music emotion id
-     * @return Return the status of the deletion.
      * @throws IllegalArgumentException When there is something wrong with given entity.
      * @throws InternalPersistenceException When an exception is thrown in the data layer.
      */
-    boolean deleteMusicEmotionById(String musicEmotionId) throws IllegalArgumentException, InternalPersistenceException;
+    void deleteMusicEmotionById(String musicEmotionId) throws IllegalArgumentException, InternalPersistenceException;
 }

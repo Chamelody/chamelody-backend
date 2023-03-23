@@ -1,6 +1,5 @@
 package com.swacademy.chamelodybackend.data.jpa;
 
-import com.swacademy.chamelodybackend.data.jpa.MusicJpaRepository;
 import com.swacademy.chamelodybackend.domain.entity.Music;
 import com.swacademy.chamelodybackend.domain.entity.MusicEmotion;
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
@@ -45,8 +44,7 @@ public class MusicRepositoryJpaImpl implements MusicRepository {
     }
 
     @Override
-    public boolean deleteMusicById(String musicId) throws IllegalArgumentException, InternalPersistenceException {
-        return false;
+    public void deleteMusicById(String musicId) throws IllegalArgumentException, InternalPersistenceException {
     }
 
     @Override
