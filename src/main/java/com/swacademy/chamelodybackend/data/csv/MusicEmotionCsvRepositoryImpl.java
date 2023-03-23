@@ -2,7 +2,7 @@ package com.swacademy.chamelodybackend.data.csv;
 
 import com.swacademy.chamelodybackend.aop.PersistenceExceptionHandler;
 import com.swacademy.chamelodybackend.data.entity.MusicEmotionDataEntity;
-import com.swacademy.chamelodybackend.data.mapper.MusicEmotionMapper;
+import com.swacademy.chamelodybackend.data.mapper.DataMusicEmotionMapper;
 import com.swacademy.chamelodybackend.domain.entity.MusicEmotion;
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
 import com.swacademy.chamelodybackend.domain.repository.MusicEmotionRepository;
@@ -17,11 +17,11 @@ import java.io.IOException;
 public class MusicEmotionCsvRepositoryImpl implements MusicEmotionRepository {
 
     private final MusicEmotionCsvRepository musicEmotionCsvRepository;
-    private final MusicEmotionMapper musicEmotionMapper;
+    private final DataMusicEmotionMapper musicEmotionMapper;
 
     public MusicEmotionCsvRepositoryImpl(
             MusicEmotionCsvRepository musicEmotionCsvRepository,
-            MusicEmotionMapper musicEmotionMapper
+            DataMusicEmotionMapper musicEmotionMapper
     ) {
         this.musicEmotionCsvRepository = musicEmotionCsvRepository;
         this.musicEmotionMapper = musicEmotionMapper;
