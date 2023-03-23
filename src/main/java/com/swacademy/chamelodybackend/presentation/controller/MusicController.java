@@ -26,7 +26,11 @@ public class MusicController {
     @Autowired
     private MusicService musicService;
 
-    public MusicController(PresentationMusicMapper musicMapper, PresentationMusicEmotionMapper musicEmotionMapper, PlaylistService playlistService) {
+    public MusicController(
+            PresentationMusicMapper musicMapper,
+            PresentationMusicEmotionMapper musicEmotionMapper,
+            PlaylistService playlistService
+    ) {
         this.musicMapper = musicMapper;
         this.musicEmotionMapper = musicEmotionMapper;
         this.playlistService = playlistService;
@@ -46,9 +50,14 @@ public class MusicController {
         return musicDtoList;
     }
 
-    @GetMapping(value = "/test")
-    public String testRequest() {
+    @GetMapping(value = "/get_test")
+    public String getTestRequest() {
         return "Hello, world!";
+    }
+
+    @PostMapping(value = "/post_test")
+    public MakePlaylistParam postTestRequest(@RequestBody MakePlaylistParam makePlaylistParam) {
+        return makePlaylistParam;
     }
 
 }
