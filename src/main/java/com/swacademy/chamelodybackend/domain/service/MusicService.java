@@ -1,5 +1,6 @@
 package com.swacademy.chamelodybackend.domain.service;
 
+import com.swacademy.chamelodybackend.aop.InternalServerExceptionHandler;
 import com.swacademy.chamelodybackend.domain.entity.Emotion;
 import com.swacademy.chamelodybackend.domain.entity.Music;
 import com.swacademy.chamelodybackend.domain.entity.MusicEmotion;
@@ -52,6 +53,7 @@ public class MusicService {
      * @param music music entity that has music emotion entity.
      * @return saved music id
      */
+    @InternalServerExceptionHandler
     public String addMusic(Music music) {
         MusicEmotion musicEmotion = this.createDefaultMusicEmotion(music.getId());
         music.setMusicEmotion(musicEmotion);
@@ -65,6 +67,7 @@ public class MusicService {
      * @param musicEmotion music emotion entity
      * @return saved music id
      */
+    @InternalServerExceptionHandler
     public String addMusic(Music music, MusicEmotion musicEmotion) {
         music.setMusicEmotion(musicEmotion);
         this.addMusicEmotion(musicEmotion);
@@ -76,6 +79,7 @@ public class MusicService {
      * @param musicList music entity list that have music emotion entities.
      * @return saved music id list
      */
+    @InternalServerExceptionHandler
     public List<String> addMusicList(List<Music> musicList) {
         List<String> musicIdList = new ArrayList<>();
         musicList.forEach(music -> {
@@ -93,6 +97,7 @@ public class MusicService {
      * @param musicEmotion music emotion entity
      * @return saved music emotion id
      */
+    @InternalServerExceptionHandler
     private String addMusicEmotion(MusicEmotion musicEmotion) {
         return musicEmotionRepository.insertMusicEmotion(musicEmotion);
     }
@@ -102,6 +107,7 @@ public class MusicService {
      * @param music music entity
      * @return the status of deletion
      */
+    @InternalServerExceptionHandler
     public void deleteMusic(Music music) {
         this.deleteMusicEmotion(music.getMusicEmotion());
         musicRepository.deleteMusicById(music.getId());
@@ -112,6 +118,7 @@ public class MusicService {
      * @param musicId music id
      * @return the status of deletion
      */
+    @InternalServerExceptionHandler
     public void deleteMusicById(String musicId) {
         this.deleteMusicEmotionById(musicId);
         musicRepository.deleteMusicById(musicId);
@@ -122,6 +129,7 @@ public class MusicService {
      * @param musicEmotion music emotion entity
      * @return the status of deletion
      */
+    @InternalServerExceptionHandler
     private void deleteMusicEmotion(MusicEmotion musicEmotion) {
         musicEmotionRepository.deleteMusicEmotionById(musicEmotion.getId());
     }
@@ -132,6 +140,7 @@ public class MusicService {
      * @param musicEmotionId music emotion id
      * @return the status of deletion
      */
+    @InternalServerExceptionHandler
     private void deleteMusicEmotionById(String musicEmotionId) {
         musicEmotionRepository.deleteMusicEmotionById(musicEmotionId);
     }
@@ -141,6 +150,7 @@ public class MusicService {
      * @param updatedMusic updated music entity
      * @return updated music id
      */
+    @InternalServerExceptionHandler
     public String updateMusic(Music updatedMusic) {
         return musicRepository.updateMusic(updatedMusic);
     }
@@ -150,6 +160,7 @@ public class MusicService {
      * @param updatedMusicEmotion updated music emotion entity
      * @return updated music emotion id
      */
+    @InternalServerExceptionHandler
     public String updateMusicEmotion(MusicEmotion updatedMusicEmotion) {
         return musicEmotionRepository.updateMusicEmotion(updatedMusicEmotion);
     }
@@ -248,11 +259,13 @@ public class MusicService {
         return null;
     }
 
+    @InternalServerExceptionHandler
     public List<Music> getMusicListFromReleaseDateRange(Predicate<LocalDate> condition) {
         Predicate<Music> musicEntityCondition = music -> condition.test(music.getReleaseDate());
         return this.getAllMusicList().stream().filter(musicEntityCondition).toList();
     }
 
+    @InternalServerExceptionHandler
     public List<Music> getMusicListFromCachedDateRange(Predicate<LocalDate> condition) {
         Predicate<Music> musicEntityCondition = music -> condition.test(music.getCachedDate());
         return this.getAllMusicList().stream().filter(musicEntityCondition).toList();

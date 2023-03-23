@@ -1,6 +1,7 @@
 package com.swacademy.chamelodybackend.aop;
 
 import com.swacademy.chamelodybackend.domain.exception.InternalPersistenceException;
+import com.swacademy.chamelodybackend.domain.exception.InternalServerException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,5 +33,14 @@ public class ExceptionHandlerAspect {
         }
     }
 
+    @Around("@annotation(InternalServerExceptionHandler)")
+    public Object internalServerExceptionHandler(ProceedingJoinPoint joinPoint) throws Throwable {
+        try {
+            return joinPoint.proceed();
+        } catch (InternalPersistenceException internalPersistenceException) {
+            throw new InternalServerException(internalPersistenceException.getMessage() +
+                    ": " + internalPersistenceException.getClass());
+        }
+    }
 
 }
