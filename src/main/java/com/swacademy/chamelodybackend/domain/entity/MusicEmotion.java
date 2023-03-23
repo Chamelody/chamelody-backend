@@ -26,6 +26,18 @@ public class MusicEmotion {
     private Double vitality;
     private Double pride;
 
+    private Music music;
+
+    public void setMusic(Music music) {
+        this.music = music;
+        this.music.setMusicEmotion(this, true);
+    }
+
+    public void setMusic(Music music, boolean isSetSelf) {
+        if (isSetSelf) this.music = music;
+        else this.setMusic(music);
+    }
+
     public MusicEmotion() {
         this.happy = this.happy == null ? 0 : this.happy;
         this.sad = this.sad == null ? 0 : this.sad;

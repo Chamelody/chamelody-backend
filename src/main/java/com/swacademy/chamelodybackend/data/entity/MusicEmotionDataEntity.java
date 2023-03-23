@@ -80,4 +80,10 @@ public class MusicEmotionDataEntity {
 
         // @TODO Add validation logic.
     }
+
+    @Override
+    public boolean equals(Object musicEmotionDataEntity) {
+        if (!(musicEmotionDataEntity instanceof MusicEmotionDataEntity entity)) return false;
+        return this.id.equals(entity.getId());
+    }
 }
