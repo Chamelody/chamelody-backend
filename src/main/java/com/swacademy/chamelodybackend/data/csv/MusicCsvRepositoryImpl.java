@@ -43,7 +43,6 @@ public class MusicCsvRepositoryImpl implements MusicRepository {
         MusicDataEntity musicDataEntity = this.musicMapper.toDataEntity(music);
         try {
             this.musicCsvRepository.insert(musicDataEntity);
-            this.musicEmotionCsvRepository.insert(musicDataEntity.getMusicEmotion());
             return music.getId();
         } catch (IOException ioException) {
             throw new PersistenceException(ioException.getMessage());
@@ -97,7 +96,6 @@ public class MusicCsvRepositoryImpl implements MusicRepository {
     public boolean deleteMusicById(String musicId) throws IllegalArgumentException, InternalPersistenceException {
         try {
             this.musicCsvRepository.delete(musicId);
-            this.musicEmotionCsvRepository.delete(musicId);
             return true;
         } catch (IOException ioException) {
             throw new PersistenceException(ioException.getMessage());
