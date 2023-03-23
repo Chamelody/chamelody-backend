@@ -14,6 +14,7 @@ public class Music {
     private String id;
     private String name;
     private String artists;
+    private Integer popularity;
     private Double danceability;
     private Double energy;
     private Integer musicKey;
@@ -33,4 +34,14 @@ public class Music {
     private LocalDate cachedDate;
 
     private MusicEmotion musicEmotion;
+
+    public void setMusicEmotion(MusicEmotion musicEmotion) {
+        this.musicEmotion = musicEmotion;
+        this.musicEmotion.setMusic(this, true);
+    }
+
+    public void setMusicEmotion(MusicEmotion musicEmotion, boolean isSetSelf) {
+        if (isSetSelf) this.musicEmotion = musicEmotion;
+        else this.setMusicEmotion(musicEmotion);
+    }
 }

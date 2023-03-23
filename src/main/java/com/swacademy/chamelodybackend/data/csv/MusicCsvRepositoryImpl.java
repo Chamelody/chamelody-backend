@@ -38,7 +38,7 @@ public class MusicCsvRepositoryImpl implements MusicRepository {
     }
 
     @Override
-    @PersistenceExceptionHandler
+//    @PersistenceExceptionHandler
     public String insertMusic(Music music) throws IllegalArgumentException, InternalPersistenceException {
         MusicDataEntity musicDataEntity = this.musicMapper.toDataEntity(music);
         try {
@@ -54,11 +54,13 @@ public class MusicCsvRepositoryImpl implements MusicRepository {
     @PersistenceExceptionHandler
     public List<Music> selectAllMusic(boolean getMusicEmotion) throws IllegalArgumentException {
         List<MusicDataEntity> musicDataEntityList = this.musicCsvRepository.selectAll();
-        return musicDataEntityList.stream().map(musicDataEntity -> {
-            MusicEmotionDataEntity musicEmotionDataEntity = this.musicEmotionCsvRepository.select(musicDataEntity.getId());
-            musicDataEntity.setMusicEmotion(musicEmotionDataEntity);
-            return this.musicMapper.toDomainEntity(musicDataEntity);
-        }).toList();
+        if (getMusicEmotion) {
+            return musicDataEntityList.stream().map(musicDataEntity -> {
+                MusicEmotionDataEntity musicEmotionDataEntity = this.musicEmotionCsvRepository.select(musicDataEntity.getId());
+                musicDataEntity.setMusicEmotion(musicEmotionDataEntity);
+                return this.musicMapper.toDomainEntity(musicDataEntity);
+            }).toList();
+        } else return musicDataEntityList.stream().map(this.musicMapper::toDomainEntity).toList();
     }
 
     @Override
@@ -72,8 +74,10 @@ public class MusicCsvRepositoryImpl implements MusicRepository {
     @PersistenceExceptionHandler
     public Music selectMusicById(String musicId, boolean getMusicEmotion) throws IllegalArgumentException {
         MusicDataEntity musicDataEntity = this.musicCsvRepository.select(musicId);
-        MusicEmotionDataEntity musicEmotionDataEntity = this.musicEmotionCsvRepository.select(musicId);
-        musicDataEntity.setMusicEmotion(musicEmotionDataEntity);
+        if (getMusicEmotion) {
+            MusicEmotionDataEntity musicEmotionDataEntity = this.musicEmotionCsvRepository.select(musicId);
+            musicDataEntity.setMusicEmotion(musicEmotionDataEntity);
+        }
         return this.musicMapper.toDomainEntity(musicDataEntity);
     }
 
@@ -93,6 +97,7 @@ public class MusicCsvRepositoryImpl implements MusicRepository {
     public boolean deleteMusicById(String musicId) throws IllegalArgumentException, InternalPersistenceException {
         try {
             this.musicCsvRepository.delete(musicId);
+            this.musicEmotionCsvRepository.delete(musicId);
             return true;
         } catch (IOException ioException) {
             throw new PersistenceException(ioException.getMessage());

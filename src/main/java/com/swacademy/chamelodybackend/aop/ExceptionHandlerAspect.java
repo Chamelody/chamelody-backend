@@ -12,6 +12,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
 @Aspect
 public class ExceptionHandlerAspect {
@@ -22,9 +24,11 @@ public class ExceptionHandlerAspect {
             return joinPoint.proceed();
         } catch (InvalidDataAccessApiUsageException | DataRetrievalFailureException |
                  EntityNotFoundException | DuplicateKeyException illegalArgumentException) {
-            throw new IllegalArgumentException(illegalArgumentException.getMessage());
+            throw new IllegalArgumentException(illegalArgumentException.getMessage() +
+                    ": " + illegalArgumentException.getClass());
         } catch (DataAccessException | PersistenceException dataAccessException) {
-            throw new InternalPersistenceException(dataAccessException.getMessage());
+            throw new InternalPersistenceException(dataAccessException.getMessage() +
+                    ": " + dataAccessException.getClass());
         }
     }
 
