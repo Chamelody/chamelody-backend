@@ -63,8 +63,9 @@ public class MusicEmotionCsvRepository {
         return this.cache;
     }
 
-    public MusicEmotionDataEntity update(MusicEmotionDataEntity updatedMusicEmotion) throws IOException {
+    public MusicEmotionDataEntity update(MusicEmotionDataEntity updatedMusicEmotion) throws IOException, EntityNotFoundException {
         List<MusicEmotionDataEntity> updateList = this.cache;
+        this.select(updatedMusicEmotion.getId());  // It is makeshift for EntityNotFoundException. @TODO It should be changed.
         updateList.remove(updatedMusicEmotion);  // It can be done because ArrayList remove method uses 'equals' to compare.
         updateList.add(updatedMusicEmotion);
         this.insertAll(updateList);
@@ -73,6 +74,7 @@ public class MusicEmotionCsvRepository {
 
     public void delete(String musicId) throws IOException, EntityNotFoundException {
         List<MusicEmotionDataEntity> updateList = this.cache;
+        this.select(musicId);  // It is makeshift for EntityNotFoundException. @TODO It should be changed.
         updateList.remove(this.select(musicId));  // It can be done because ArrayList remove method uses 'equals' to compare.
         this.insertAll(updateList);
     }

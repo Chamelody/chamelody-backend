@@ -75,9 +75,9 @@ public class MusicService {
      * @param music music entity
      * @return the status of deletion
      */
-    public boolean deleteMusic(Music music) {
+    public void deleteMusic(Music music) {
         this.deleteMusicEmotion(music.getMusicEmotion());
-        return musicRepository.deleteMusicById(music.getId());
+        musicRepository.deleteMusicById(music.getId());
     }
 
     /**
@@ -85,10 +85,10 @@ public class MusicService {
      * @param musicId music id
      * @return the status of deletion
      */
-    public boolean deleteMusicById(String musicId) {
+    public void deleteMusicById(String musicId) {
         Music targetMusic = this.getMusicById(musicId);
         this.deleteMusicEmotion(targetMusic.getMusicEmotion());
-        return musicRepository.deleteMusicById(musicId);
+        musicRepository.deleteMusicById(musicId);
     }
 
     /**
@@ -96,8 +96,8 @@ public class MusicService {
      * @param musicEmotion music emotion entity
      * @return the status of deletion
      */
-    private boolean deleteMusicEmotion(MusicEmotion musicEmotion) {
-        return musicEmotionRepository.deleteMusicEmotionById(musicEmotion.getId());
+    private void deleteMusicEmotion(MusicEmotion musicEmotion) {
+        musicEmotionRepository.deleteMusicEmotionById(musicEmotion.getId());
     }
 
     /**
@@ -106,8 +106,8 @@ public class MusicService {
      * @param musicEmotionId music emotion id
      * @return the status of deletion
      */
-    private boolean deleteMusicEmotionById(String musicEmotionId) {
-        return musicEmotionRepository.deleteMusicEmotionById(musicEmotionId);
+    private void deleteMusicEmotionById(String musicEmotionId) {
+        musicEmotionRepository.deleteMusicEmotionById(musicEmotionId);
     }
 
     /**
