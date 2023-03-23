@@ -65,7 +65,7 @@ class MusicCsvRepositoryImplTest {
 
         music.setMusicEmotion(musicEmotion);
 
-        this.musicCsvRepository.insertMusic(music);
+//        this.musicCsvRepository.insertMusic(music);
 
         List<Music> musicList = this.musicCsvRepository.selectAllMusic(true);
 
@@ -73,7 +73,7 @@ class MusicCsvRepositoryImplTest {
 
         music.setArtists("hello");
 
-        this.musicCsvRepository.updateMusic(music);
+//        this.musicCsvRepository.updateMusic(music);
 
 //        this.musicCsvRepository.deleteMusicById("asdfasdf");
     }

@@ -25,13 +25,37 @@ public class MusicService {
     }
 
 
+    private MusicEmotion createDefaultMusicEmotion(String musicId) {
+        MusicEmotion musicEmotion = new MusicEmotion();
+        musicEmotion.setId(musicId);
+        musicEmotion.setHappy(0d);
+        musicEmotion.setSad(0d);
+        musicEmotion.setFear(0d);
+        musicEmotion.setAnger(0d);
+        musicEmotion.setLove(0d);
+        musicEmotion.setDefaultMood(0d);
+        musicEmotion.setRelax(0d);
+        musicEmotion.setNervous(0d);
+        musicEmotion.setSurprise(0d);
+        musicEmotion.setTouch(0d);
+        musicEmotion.setShame(0d);
+        musicEmotion.setLonely(0d);
+        musicEmotion.setLonging(0d);
+        musicEmotion.setTired(0d);
+        musicEmotion.setVitality(0d);
+        musicEmotion.setPride(0d);
+        return musicEmotion;
+    }
+
     /**
      * Add music.
      * @param music music entity that has music emotion entity.
      * @return saved music id
      */
     public String addMusic(Music music) {
-        this.addMusicEmotion(music.getMusicEmotion());
+        MusicEmotion musicEmotion = this.createDefaultMusicEmotion(music.getId());
+        music.setMusicEmotion(musicEmotion);
+        this.addMusicEmotion(musicEmotion);
         return musicRepository.insertMusic(music);
     }
 
@@ -42,8 +66,8 @@ public class MusicService {
      * @return saved music id
      */
     public String addMusic(Music music, MusicEmotion musicEmotion) {
-        this.addMusicEmotion(musicEmotion);
         music.setMusicEmotion(musicEmotion);
+        this.addMusicEmotion(musicEmotion);
         return musicRepository.insertMusic(music);
     }
 
@@ -55,7 +79,10 @@ public class MusicService {
     public List<String> addMusicList(List<Music> musicList) {
         List<String> musicIdList = new ArrayList<>();
         musicList.forEach(music -> {
-            String savedMusicId = musicRepository.insertMusic(music);
+            MusicEmotion musicEmotion = this.createDefaultMusicEmotion(music.getId());
+            music.setMusicEmotion(musicEmotion);
+            this.addMusicEmotion(musicEmotion);
+            String savedMusicId = this.musicRepository.insertMusic(music);
             musicIdList.add(savedMusicId);
         });
         return musicIdList;
@@ -86,8 +113,7 @@ public class MusicService {
      * @return the status of deletion
      */
     public void deleteMusicById(String musicId) {
-        Music targetMusic = this.getMusicById(musicId);
-        this.deleteMusicEmotion(targetMusic.getMusicEmotion());
+        this.deleteMusicEmotionById(musicId);
         musicRepository.deleteMusicById(musicId);
     }
 
@@ -101,8 +127,8 @@ public class MusicService {
     }
 
     /**
-     * Delete music emotion by id. It cannot be called outer class
-     * to ensure the safe relation of Music-MusicEmotion data.
+     * Delete music emotion by id.
+     * It cannot be called outer class to ensure the safe relation of Music-MusicEmotion data.
      * @param musicEmotionId music emotion id
      * @return the status of deletion
      */
@@ -177,18 +203,19 @@ public class MusicService {
         };
     }
 
-    public List<Music> getMusicListFromFeatureRange(Emotion targetEmotion, Predicate<Double> condition) {
+    public List<Music> getMusicListFromEmotionRange(Emotion targetEmotion, Predicate<Double> condition) {
         Predicate<Music> musicEntityCondition = this.convertPredicateDoubleToMusic(targetEmotion, condition);
         return this.getAllMusicList().stream().filter(musicEntityCondition).toList();
     }
 
     @Deprecated
-    public List<Music> getMusicListFromFeatureRange(Predicate<Music> condition) {
+    public List<Music> getMusicListFromEmotionRange(Predicate<Music> condition) {
         return this.getAllMusicList().stream().filter(condition).collect(Collectors.toList());
     }
 
+    @Deprecated
     @SuppressWarnings("unchecked")
-    public List<Music> getMusicListFromFeatureRange(Object...targetEmotionAndCondition) {
+    public List<Music> getMusicListFromEmotionRange(Object...targetEmotionAndCondition) {
         // arguments validation
         if (targetEmotionAndCondition.length % 2 != 0)
             throw new IllegalArgumentException("Arguments counts must be even.");
@@ -209,6 +236,11 @@ public class MusicService {
             musicList = musicList.stream().filter(musicEntityCondition).toList();
         }
         return musicList;
+    }
+
+    public List<Music> getMusicListFromFeatureRange() {
+        // @TODO Implement this method.
+        return null;
     }
 
     public List<Music> getMusicListByMainEmotion(Emotion targetEmotion) {
@@ -246,7 +278,7 @@ public class MusicService {
             this.musicList = musicList;
         }
 
-        MusicListBuilder setFeatureRange(Emotion targetEmotion, Predicate<Double> condition) {
+        MusicListBuilder setEmotionRange(Emotion targetEmotion, Predicate<Double> condition) {
             Predicate<Music> musicEntityCondition =
                     MusicService.this.convertPredicateDoubleToMusic(targetEmotion, condition);
             this.musicList = this.musicList.stream().filter(musicEntityCondition).toList();
@@ -254,13 +286,14 @@ public class MusicService {
         }
 
         @Deprecated
-        MusicListBuilder setFeatureRange(Predicate<Music> condition) {
+        MusicListBuilder setEmotionRange(Predicate<Music> condition) {
             this.musicList = this.musicList.stream().filter(condition).toList();
             return this;
         }
 
+        @Deprecated
         @SuppressWarnings("unchecked")
-        MusicListBuilder setFeatureRange(Object...targetEmotionAndCondition) {
+        MusicListBuilder setEmotionRange(Object...targetEmotionAndCondition) {
             // arguments validation
             if (targetEmotionAndCondition.length % 2 != 0)
                 throw new IllegalArgumentException("Arguments counts must be even.");
@@ -280,6 +313,11 @@ public class MusicService {
                         MusicService.this.convertPredicateDoubleToMusic(targetEmotion, condition);
                 this.musicList = this.musicList.stream().filter(musicEntityCondition).toList();
             }
+            return this;
+        }
+
+        MusicListBuilder setFeatureRange() {
+            // @TODO Implement this method.
             return this;
         }
 
