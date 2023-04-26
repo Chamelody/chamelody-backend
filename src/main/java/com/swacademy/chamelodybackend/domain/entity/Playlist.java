@@ -7,12 +7,11 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter @Setter
 @AllArgsConstructor
 public class Playlist {
-    private ArrayList<Music> musicList;
+    private List<Music> musicList;
     private final Emotion startEmotion;
     private final Emotion targetEmotion;
     private int maximumSize;

@@ -1,10 +1,12 @@
 package com.swacademy.chamelodybackend.presentation.controller;
 
 import com.swacademy.chamelodybackend.domain.entity.Music;
+import com.swacademy.chamelodybackend.domain.entity.Playlist;
 import com.swacademy.chamelodybackend.domain.service.MusicService;
 import com.swacademy.chamelodybackend.domain.service.PlaylistService;
 import com.swacademy.chamelodybackend.presentation.dto.MakePlaylistParam;
 import com.swacademy.chamelodybackend.presentation.dto.MusicDto;
+import com.swacademy.chamelodybackend.presentation.dto.PlaylistDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,26 +40,18 @@ public class MusicController {
 
 
     @PostMapping(value = "/playlist")
-    public List<MusicDto> makePlaylistRequest(@RequestBody MakePlaylistParam makePlaylistParam) {
-        return null;
-    }
-
-    @GetMapping(value = "/musiclist")
-    public List<MusicDto> getAllMusicListRequest() {
-        List<Music> musicList = this.musicService.getAllMusicList();
+    public PlaylistDto makePlaylistRequest(@RequestBody MakePlaylistParam makePlaylistParam) {
+        Playlist playlist =  playlistService.createPlaylist(makePlaylistParam.getFromEmotion(), makePlaylistParam.getToEmotion());
+        playlist.getMusicList().forEach(System.out::println);
+        PlaylistDto playlistDto = new PlaylistDto();
         List<MusicDto> musicDtoList = new ArrayList<>();
-        musicList.forEach(music -> musicDtoList.add(this.musicMapper.toDto(music)));
-        return musicDtoList;
-    }
-
-    @GetMapping(value = "/get_test")
-    public String getTestRequest() {
-        return "Hello, world!";
-    }
-
-    @PostMapping(value = "/post_test")
-    public MakePlaylistParam postTestRequest(@RequestBody MakePlaylistParam makePlaylistParam) {
-        return makePlaylistParam;
+        playlist.getMusicList().forEach(music -> musicDtoList.add(this.musicMapper.toDto(music)));
+        playlistDto.setMusicList(musicDtoList);
+        playlistDto.setStartEmotion(playlist.getStartEmotion());
+        playlistDto.setTargetEmotion(playlist.getTargetEmotion());
+        playlistDto.setStartRepMusic(this.musicMapper.toDto(playlist.getStartRepMusic()));
+        playlistDto.setTargetRepMusic(this.musicMapper.toDto(playlist.getTargetRepMusic()));
+        return playlistDto;
     }
 
 }
