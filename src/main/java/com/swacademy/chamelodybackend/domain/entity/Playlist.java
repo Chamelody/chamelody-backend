@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -18,6 +17,7 @@ public class Playlist {
     private int maximumSize;                // 최대 곡 수
     private Music startRepMusic;            // 시작 대표곡
     private Music targetRepMusic;           // 목표 대표곡
+
 
     public Playlist(Emotion startEmotion, Emotion targetEmotion, Music startRepMusic, Music targetRepMusic) {
         this.musicList = new ArrayList<>();

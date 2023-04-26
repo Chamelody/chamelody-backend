@@ -7,11 +7,11 @@ import com.opencsv.exceptions.CsvException;
 import com.swacademy.chamelodybackend.data.entity.MusicDataEntity;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,18 +19,21 @@ import java.util.Optional;
 @Repository
 public class MusicCsvRepository {
 
-    private final static String MUSIC_FILE = "src/main/resources/music.csv";
+    private final static String MUSIC_FILE = "music.csv";
+    private final Reader reader;
 
     private final CsvObjectMapper csvObjectMapper;
     List<MusicDataEntity> cache = null;
 
     public MusicCsvRepository() throws IOException, CsvException {
         this.csvObjectMapper = new CsvObjectMapper();
+        ClassPathResource resource = new ClassPathResource(MUSIC_FILE);
+        this.reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
         this.initializeCache();
     }
 
     private void initializeCache() throws IOException, CsvException {
-        CSVReader csvReader = new CSVReaderBuilder(new FileReader(MUSIC_FILE)).withSkipLines(1).build();
+        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         List<String[]> lines = csvReader.readAll();
         this.cache = new ArrayList<>();
         lines.forEach(line -> this.cache.add(this.csvObjectMapper.csvLineToMusicDataEntity(line)));
