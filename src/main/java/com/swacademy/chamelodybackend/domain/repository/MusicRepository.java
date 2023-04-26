@@ -26,7 +26,6 @@ public interface MusicRepository {
      * @return Return list of music entities.
      */
     List<Music> selectAllMusic(boolean getMusicEmotion);
-
     /**
      * Select music by id. If there is no music entity matching
      * given music id, throw illegal argument exception.

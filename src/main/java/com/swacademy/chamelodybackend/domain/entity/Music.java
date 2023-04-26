@@ -44,4 +44,12 @@ public class Music {
         if (isSetSelf) this.musicEmotion = musicEmotion;
         else this.setMusicEmotion(musicEmotion);
     }
+
+    @Override
+    public String toString() {
+        return "Music{" +
+                "name='" + name + '\'' +
+                ", artists='" + artists + '\'' +
+                '}';
+    }
 }
