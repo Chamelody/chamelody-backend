@@ -11,7 +11,8 @@ import java.util.Random;
 
 @Service
 public class PlaylistService {
-    private final MusicService musicService; //??? 이거 어떤 방식으로 가져왔을까?
+    private final static int maximumSizeOfPlaylist = 20;        // 나중에는 유저가 설정하게 변경
+    private final MusicService musicService;
     PlaylistGenerator generate;
 
     public PlaylistService(MusicService musicService, PlaylistGenerator generate) {
@@ -19,27 +20,46 @@ public class PlaylistService {
         this.generate = generate;
     }
 
-    /*
-     * Playlist 생성 1. 사용자가 감정만 선택하는 경우
-     * 대표곡을 랜덤으로 선택한다.
+
+    /**
+     * Create Playlist - only emotion selection
+     * @param startEmotion current mood
+     * @param targetEmotion mood I want
+     * @return playlist
      */
     public Playlist createPlaylist(Emotion startEmotion, Emotion targetEmotion) {
         Music randomStartMusic = randomSelectRepMusic(startEmotion);
         Music randomTargetMusic = randomSelectRepMusic(targetEmotion);
         return new Playlist(startEmotion, targetEmotion, randomStartMusic, randomTargetMusic)
-                .fillMusicInPlaylist(generate, 50);
+                .fillMusicInPlaylist(generate, maximumSizeOfPlaylist);
     }
 
-    /*
-     * Playlist 생성 2. 사용자가 감정 + 대표곡을 선정하는 경우
+
+    /**
+     * Create Playlist - emotion, music selection
+     * @param startEmotion current mood
+     * @param targetEmotion mood I want
+     * @param startRepMusic from start emotion
+     * @param targetRepMusic from target emotion
+     * @return playlist
      */
     public Playlist createPlaylist(Emotion startEmotion, Emotion targetEmotion, Music startRepMusic, Music targetRepMusic) {
          return new Playlist(startEmotion, targetEmotion, startRepMusic, targetRepMusic)
-                 .fillMusicInPlaylist(generate, 50);
+                 .fillMusicInPlaylist(generate, maximumSizeOfPlaylist);
     }
 
-    // 걍 랜덤으로 뽑자.. 지금은 급하니까..
+
+    /**
+     * Choose a representative music of emotion at random.
+     * [Shortage] choose randomly from the whole.
+     * @param emotion selected by user
+     * @return music of emotion
+     */
     public Music randomSelectRepMusic(Emotion emotion) {
+        /*
+         TODO : 감정 분석 후에 해당 곡에 대한 대표곡을 뽑는다.
+         사실 이 메소드도 MusicService에서 처리해야 할 듯
+         */
         Random random = new Random();
         List<Music> fullMusicList = musicService.getAllMusicList();
         return fullMusicList.get(random.nextInt(fullMusicList.size()));
